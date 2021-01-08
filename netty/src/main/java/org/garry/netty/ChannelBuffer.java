@@ -43,4 +43,22 @@ package org.garry.netty;
  */
 public interface ChannelBuffer extends Comparable<ChannelBuffer> {
 
+    /**
+     * Returns the numbers of bytes (octets) this buffer can contain
+     * @return
+     */
+    int capacity();
+
+    /**
+     * Returns the {@code readerIndex} of this buffer
+     * @return
+     */
+    int readerIndex();
+
+    /**
+     * Returns the {@code writerIndex} of this buffer
+     * @return
+     */
+    int writerIndex();
+
 }
