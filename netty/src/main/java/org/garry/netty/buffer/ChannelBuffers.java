@@ -1,4 +1,4 @@
-package org.garry.netty;
+package org.garry.netty.buffer;
 
 public class ChannelBuffers {
 }

@@ -1,4 +1,4 @@
-package org.garry.netty;
+package org.garry.netty.buffer;
 
 
 /**
@@ -40,8 +40,56 @@ package org.garry.netty;
  *     |                   |                  |                  |
  *     0         <=    readerIndex  <=     writerIndex   <=    capacity
  * </pre>
+ *
+ * <h4>Readable bytes (the actual 'content' of the buffer)</h4>
+ *
+ * This segment, so called 'the <strong>content</strong> of a buffer',is where
+ * the actual data is stored. Any operation whose name starts with
+ * {@code read}or {@code skip}will get or skip the data at the current
+ * {@link #readerIndex() readerIndex} and increase it by the number of read
+ * bytes.If the arguments of the read operation is also a {@link ChannelBuffer}
+ * and no start index is specified, the specified buffer's {@link #readerIndex()}
+ * is increased together
+ *
+ * It there's not enough content left, {@link IndexOutOfBoundsException} is
+ * raised. The default value of newly allocated, wrapped or copied buffer's
+ * {@link #readerIndex() readerIndex} is {@code 0}
+ *
+ * <pre>
+ *     // Iterates the readable bytes of a buffer
+ *     ChannelBuffer buffer = ...;
+ *     while(buffer.readable()) {
+ *         System.out.println(buffer.readByte());
+ *     }
+ * </pre>
+ *
+ * <h4>Writable space</h4>
+ *
+ * This segment is a undefined space which needs to be filled. Any operation
+ * whose name ends with {@code write} will write the data at the current
+ * {@link #writerIndex() writerIndex} and increase it by the number of written
+ * bytes. If the argument of the write operation is also a {@link ChannelBuffer},
+ * and no start index is specified, the specified buffer's
+ * {@link #readerIndex() readerIndex} is increased together.
+ *
+ * If there's not enough writable space left, {@link IndexOutOfBoundsException}
+ * is raised. The default value of newly allocated buffer's
+ * {@link #writerIndex() writerIndex} is {@code 0}.The default value of
+ * wrapped or copied buffer's {@link #writerIndex() writerIndex} is the
+ * {@link #capacity() capacity} of buffer
+ *
+ * <pre>
+ *     // Fills the writable space of a buffer with random integers
+ *     ChannelBuffer buffer = ...;
+ *     while(buffer.writableBytes() >= 4){
+ *         buffer.writeInt(random.nextInt()).
+ *     }
+ * </pre>
+ *
  */
 public interface ChannelBuffer extends Comparable<ChannelBuffer> {
+
+
 
     /**
      * Returns the numbers of bytes (octets) this buffer can contain
@@ -60,5 +108,8 @@ public interface ChannelBuffer extends Comparable<ChannelBuffer> {
      * @return
      */
     int writerIndex();
+
+
+    void writeInt(int value);
 
 }
