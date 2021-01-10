@@ -86,6 +86,31 @@ package org.garry.netty.buffer;
  *     }
  * </pre>
  *
+ * <h4>Disacrdable bytes</h4>
+ *
+ * This segment contains the bytes which were read already by a read operation.
+ * Initially, the size of this segment is {@code 0}, but its size increases up
+ * to the {@link #writerIndex()} as read operations are executed.
+ * The read bytes can be discarded by calling {@link #discardReadBytes()} to
+ * reclaim unused area as depicted by the following diagram:
+ *
+ * <pre>
+ *     BEFORE discardReadBytes()
+ *      +-------------------+------------------+------------------+
+ *      | discardable bytes |  readable bytes  |  writable space  |
+ *      |                   |     (CONTENT)    |                  |
+ *      +-------------------+------------------+------------------+
+ *      |                   |                  |                  |
+ *      0      <=      readerIndex   <=   writerIndex    <=    capacity
+ *  AFTER discardReadBytes()
+ *
+ *      +------------------+--------------------------------------+
+ *      |  readable bytes  |    writable space (got more space)   |
+ *      |     (CONTENT)    |                                      |
+ *      +------------------+--------------------------------------+
+ *      |                  |                                      |
+ * readerIndex (0) <= writerIndex (decreased)        <=        capacity
+ * </pre>
  */
 public interface ChannelBuffer extends Comparable<ChannelBuffer> {
 
@@ -111,5 +136,14 @@ public interface ChannelBuffer extends Comparable<ChannelBuffer> {
 
 
     void writeInt(int value);
+
+
+    /**
+     * Discards the bytes between the 0th index and {@code readerIndex}
+     * It moves the bytes between {@code readerIndex} and {@code writerIndex}
+     * to the 0th index, and sets {@code readerIndex} and {@code writerIndex}
+     * to {@code 0} and {@code oldWriterIndex - oldReaderIndex} respectively.
+     */
+    void discardReadBytes();
 
 }
