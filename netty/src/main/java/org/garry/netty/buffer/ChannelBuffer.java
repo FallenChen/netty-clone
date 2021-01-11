@@ -1,6 +1,8 @@
 package org.garry.netty.buffer;
 
 
+import java.nio.ByteBuffer;
+
 /**
  * A random and sequential accessible sequence of zero or more bytes (octets)
  * This interface provides an abstract view for one or more primitive byte
@@ -111,6 +113,33 @@ package org.garry.netty.buffer;
  *      |                  |                                      |
  * readerIndex (0) <= writerIndex (decreased)        <=        capacity
  * </pre>
+ *
+ * <h4>Clearing the buffer indexes</h4>
+ *
+ * You can set both {@link #readerIndex()} and {@link #writerIndex()}
+ * to {@code 0} by calling {@link #clear()}.It doesn't clear the buffer content
+ * (e.g. filling with {@code 0}) but just clears the two pointers.this operation
+ * is different from {@link ByteBuffer#clear()}
+ *
+ * <pre>
+ *  BEFORE clear()
+ *
+ *      +-------------------+------------------+------------------+
+ *      | discardable bytes |  readable bytes  |  writable space  |
+ *      |                   |     (CONTENT)    |                  |
+ *      +-------------------+------------------+------------------+
+ *      |                   |                  |                  |
+ *      0      <=      readerIndex   <=   writerIndex    <=    capacity
+ *
+ *
+ *  AFTER clear()
+ *
+ *      +---------------------------------------------------------+
+ *      |             writable space (got more space)             |
+ *      +---------------------------------------------------------+
+ *      |                                                         |
+ *      0 = readerIndex = writerIndex            <=            capacity
+ * </pre
  */
 public interface ChannelBuffer extends Comparable<ChannelBuffer> {
 
@@ -145,5 +174,15 @@ public interface ChannelBuffer extends Comparable<ChannelBuffer> {
      * to {@code 0} and {@code oldWriterIndex - oldReaderIndex} respectively.
      */
     void discardReadBytes();
+
+    /**
+     * Sets the {@code readerIndex} and {@code writerIndex} of this buffer to
+     * {@code 0}
+     * This method is identical to {@link #setIndex(int,int) setIndex(0,0)}
+     */
+    void clear();
+
+
+    void setIndex(int readerIndex, int writeIndex);
 
 }
