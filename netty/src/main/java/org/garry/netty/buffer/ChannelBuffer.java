@@ -182,7 +182,56 @@ public interface ChannelBuffer extends Comparable<ChannelBuffer> {
      */
     void clear();
 
-
+    /**
+     * Sets the {@code readerIndex} and {@code writerIndex} of this buffer
+     * in one shot. This method is useful because you don't need to worry
+     * about the invocation order of {@link #readerIndex(int)} and {@link #writerIndex(int)}
+     * methods. For example, the following code will fail:
+     *
+     * <pre>
+     *     // Create a buffer whose readerIndex, writerIndex and capacity are
+     *     // 0,0 and 8 respectively
+     *     ChannelBuffer buf = ChannelBuffers.buffer(8);
+     *
+     *     // IndexOutOfBoundsException is thrown because the specified
+     *     // readerIndex (2) cannot be greater than the current writerIndex(0)
+     *     buf.readerIndex(2);
+     *     buf.writerIndex(4);
+     * </pre>
+     *
+     * The following code will also fail:
+     * <pre>
+     *     // Create a buffer whose readerIndex, writerIndex and capacity are
+     *     // 0,0 and 8 respectively
+     *     ChannelBuffer buf = ChannelBuffers.wrappedBuffer(new byte[8]);
+     *
+     *     // readerIndex becomes 8
+     *     buf.readLong();
+     *
+     *     // IndexOutOfBoundsException is thrown because the specified
+     *     // writerIndex (4) cannot be less than the current readerIndex(8)
+     *     buf.writerIndex(4);
+     *     buf.readerIndex(2);
+     *
+     * </pre>
+     *
+     * By contrast, {@link #setIndex(int, int)} guarantees that is never
+     * throws an {@link IndexOutOfBoundsException} as long as the specified indexes meets
+     * all constraints, regardless what the current index values of the buffer are:
+     *
+     * <pre>
+     *     // No matter what the current state of the buffer is, the following
+     *     // call always succeeds as long as the capacity of the buffer is not
+     *     // less than 4
+     *     buf.setIndex(2,4)
+     * </pre>
+     *
+     * @throws IndexOutOfBoundsException
+     *         if the specified {@code readerIndex} is less than 0,
+     *         if the specified {@code writerIndex} is less than the specified
+     *         {@code readerIndex} or if the specified {@code writerIndex} is
+     *         greater than {@code capacity}
+     */
     void setIndex(int readerIndex, int writeIndex);
 
 }
