@@ -139,7 +139,13 @@ import java.nio.ByteBuffer;
  *      +---------------------------------------------------------+
  *      |                                                         |
  *      0 = readerIndex = writerIndex            <=            capacity
- * </pre
+ * </pre>
+ *
+ * <h3>Search operation</h3>
+ *
+ * Various {@code indexOf()} methods help you locate an index of a value which
+ * meets a certain criteria. Complicated dynamic sequential search can be done
+ * with {@link ChannelBufferIndexFinder} as well as simple static single byte search
  */
 public interface ChannelBuffer extends Comparable<ChannelBuffer> {
 
