@@ -146,6 +146,15 @@ import java.nio.ByteBuffer;
  * Various {@code indexOf()} methods help you locate an index of a value which
  * meets a certain criteria. Complicated dynamic sequential search can be done
  * with {@link ChannelBufferIndexFinder} as well as simple static single byte search
+ *
+ * <h3>Mark and reset</h3>
+ *
+ * There are two marker indexes in every buffer. One is for storing
+ * {@link #readerIndex()} and the other is for storing
+ * {@link #writerIndex()} . You can always reposition one of the
+ * two indexes by calling a reset method. It works in a similar fashion to
+ * the mark and reset methods in {@link java.io.InputStream} except that there's no
+ * {@code readlimit}
  */
 public interface ChannelBuffer extends Comparable<ChannelBuffer> {
 
@@ -239,5 +248,13 @@ public interface ChannelBuffer extends Comparable<ChannelBuffer> {
      *         greater than {@code capacity}
      */
     void setIndex(int readerIndex, int writeIndex);
+
+    void markReaderIndex();
+
+    void resetReaderIndex();
+
+    void markWriterIndex();
+
+    void resetWriterIndex();
 
 }
