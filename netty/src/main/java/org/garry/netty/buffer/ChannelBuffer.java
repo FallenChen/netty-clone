@@ -155,6 +155,29 @@ import java.nio.ByteBuffer;
  * two indexes by calling a reset method. It works in a similar fashion to
  * the mark and reset methods in {@link java.io.InputStream} except that there's no
  * {@code readlimit}
+ *
+ * <h3>Derived buffers</h3>
+ *
+ * You can create a view of an existing buffer by calling either
+ * {@link #duplicate()},{@link #slice()} or {@link @slice(int,int)}
+ * A derived buffer will have an independent {@link #readerIndex()},
+ * {@link #writerIndex()} and marked indexes, while it shares
+ * other internal data representation, just like a NIO {@link ByteBuffer} does.
+ *
+ * In case a completely fresh copy of an existing buffer is required,please
+ * call {@link #copy()} method instead.
+ *
+ * <h3>Conversion to existing JDK types</h3>
+ *
+ * Various {@link #toByteBuffer()} and {@link #toByteBuffers} methods convert
+ * a {@link ChannelBuffer} into one or more NIO buffers.These methods avoid
+ * buffer allocation and memory copy whenever possible,but there's no
+ * guarantee that memory copy will not be involved or that an explicit memory
+ * copy will be involved.
+ *
+ * In case you need to convert a {@link ChannelBuffer} into
+ * an {@link java.io.InputStream} or an {@link java.io.OutputStream},please refer to
+ * {@link ChannelBufferInputStream} and {@link ChannelBufferOutputStream}
  */
 public interface ChannelBuffer extends Comparable<ChannelBuffer> {
 
@@ -172,11 +195,20 @@ public interface ChannelBuffer extends Comparable<ChannelBuffer> {
      */
     int readerIndex();
 
+    int readerIndex(int readerIndex);
+
     /**
      * Returns the {@code writerIndex} of this buffer
      * @return
      */
     int writerIndex();
+
+    /**
+     * Sets the {@code writerIndex} of this buffer
+     * @param writerIndex
+     * @return
+     */
+    int writerIndex(int writerIndex);
 
 
     void writeInt(int value);
@@ -249,12 +281,83 @@ public interface ChannelBuffer extends Comparable<ChannelBuffer> {
      */
     void setIndex(int readerIndex, int writeIndex);
 
+    /**
+     * Returns the number of readable bytes which equals to
+     * {@code (writerIndex - readerIndex)}
+     * @return
+     */
+    int readableBytes();
+
+    /**
+     * Returns the number of writable bytes which equals to
+     * {@code capacity - writerIndex}
+     * @return
+     */
+    int writableBytes();
+
+    /**
+     * {@link #readableBytes()} greater than {@code 0}
+     * @return
+     */
+    boolean readable();
+
+    /**
+     * {@link #writableBytes()} greater than {@code 0}
+     * @return
+     */
+    boolean writable();
+
+    /**
+     * Marks the current {@code readerIndex} in this buffer. You can restore
+     * the marked {@code readerIndex} by calling {@link #resetReaderIndex()}
+     * The initial value of the marked {@code readerIndex} is always {@code 0}
+     */
     void markReaderIndex();
 
+    /**
+     * Repositions the current {@code readerIndex} to the marked {@code readerIndex}
+     * in this buffer
+     *
+     * @throws  IndexOutOfBoundsException
+     *          if the current {@code writerIndex} is less than the marked
+     *          {@code readerIndex}
+     */
     void resetReaderIndex();
 
+    /**
+     * Marks the current {@code writerIndex} in this buffer.  You can restore
+     * the marked {@code writerIndex} by calling {@link #resetWriterIndex()}.
+     * The initial value of the marked {@code writerIndex} is always {@code 0}.
+     */
     void markWriterIndex();
 
+    /**
+     * Repositions the current {@code writerIndex} to the marked {@code writerIndex}
+     * in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if the current {@code readerIndex} is greater than the marked
+     *         {@code writerIndex}
+     */
     void resetWriterIndex();
+
+    ChannelBuffer copy();
+
+    ChannelBuffer copy(int index,int length);
+
+    ChannelBuffer slice();
+
+    ChannelBuffer slice(int index,int length);
+
+    ChannelBuffer duplicate();
+
+    ByteBuffer toByteBuffer();
+
+    ByteBuffer toByteBuffer(int index, int length);
+
+    ByteBuffer[] toByteBuffers();
+
+    ByteBuffer[] toByteBuffers(int index,int length);
+
 
 }
