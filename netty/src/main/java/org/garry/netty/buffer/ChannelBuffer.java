@@ -359,5 +359,17 @@ public interface ChannelBuffer extends Comparable<ChannelBuffer> {
 
     ByteBuffer[] toByteBuffers(int index,int length);
 
+    /**
+     * Returns a hash code which was calculated from the content of this
+     * buffer.
+     * @return
+     */
+    int hashCode();
+
+    boolean equals();
+
+    int compareTo(ChannelBuffer buffer);
+
+    String toString();
 
 }
