@@ -11,6 +11,8 @@ public interface ChannelFuture {
 
     boolean cancel();
 
+    void setSuccess();
+    void setFailure(Throwable cause);
 
 
 }
