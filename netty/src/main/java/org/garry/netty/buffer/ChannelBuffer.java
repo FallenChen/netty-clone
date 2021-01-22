@@ -181,7 +181,7 @@ import java.nio.ByteBuffer;
  */
 public interface ChannelBuffer extends Comparable<ChannelBuffer> {
 
-
+    ChannelBuffer EMPTY_BUFFER = new BigEndianHeapChannelBuffer(0);
 
     /**
      * Returns the numbers of bytes (octets) this buffer can contain
@@ -195,7 +195,7 @@ public interface ChannelBuffer extends Comparable<ChannelBuffer> {
      */
     int readerIndex();
 
-    int readerIndex(int readerIndex);
+    void readerIndex(int readerIndex);
 
     /**
      * Returns the {@code writerIndex} of this buffer
@@ -208,7 +208,7 @@ public interface ChannelBuffer extends Comparable<ChannelBuffer> {
      * @param writerIndex
      * @return
      */
-    int writerIndex(int writerIndex);
+    void writerIndex(int writerIndex);
 
 
     void writeInt(int value);
