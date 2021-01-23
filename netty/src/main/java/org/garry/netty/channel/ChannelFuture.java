@@ -1,5 +1,7 @@
 package org.garry.netty.channel;
 
+import java.util.concurrent.TimeUnit;
+
 public interface ChannelFuture {
 
     Channel getChannel();
@@ -14,5 +16,14 @@ public interface ChannelFuture {
     void setSuccess();
     void setFailure(Throwable cause);
 
+    void addListener(ChannelFutureListener listener);
+    void removeListener(ChannelFutureListener listener);
+
+    ChannelFuture await();
+    ChannelFuture awaitUninterruptibly();
+    boolean await(long timeout, TimeUnit unit);
+    boolean await(long timeoutMills);
+    boolean awaitUninterruptibly(long timeout, TimeUnit unit);
+    boolean awaitUninterruptibly(long timeoutMillis);
 
 }
