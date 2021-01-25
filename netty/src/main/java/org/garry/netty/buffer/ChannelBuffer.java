@@ -222,6 +222,8 @@ public interface ChannelBuffer extends Comparable<ChannelBuffer> {
      */
     void discardReadBytes();
 
+    int getInt(int index);
+
     /**
      * Sets the {@code readerIndex} and {@code writerIndex} of this buffer to
      * {@code 0}

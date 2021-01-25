@@ -6,5 +6,11 @@ public interface ChannelHandlerContext {
 
     String getName();
     ChannelHandler getHandler();
+    boolean canHandleUpstream();
+    boolean canHandleDownstream();
+
+    void sendUpstream(ChannelEvent e);
+    void sendDownstream(ChannelEvent e);
+
 
 }
