@@ -361,6 +361,8 @@ public interface ChannelBuffer extends Comparable<ChannelBuffer> {
 
     ByteBuffer[] toByteBuffers(int index,int length);
 
+    void skipBytes(int length);
+
     /**
      * Returns a hash code which was calculated from the content of this
      * buffer.

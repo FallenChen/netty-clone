@@ -1,6 +1,7 @@
 package org.garry.netty.handler.codec.serialization;
 
 import org.garry.netty.buffer.ChannelBuffer;
+import org.garry.netty.buffer.ChannelBufferInputStream;
 import org.garry.netty.channel.Channel;
 import org.garry.netty.channel.ChannelHandlerContext;
 import org.garry.netty.handler.codec.frame.FrameDecoder;
@@ -56,8 +57,12 @@ public class ObjectDecoder extends FrameDecoder {
             return null;
         }
 
+        // todo???
+        buffer.skipBytes(4);
 
 
-        return ;
+        return new CompactObjectInputStream(
+                new ChannelBufferInputStream(buffer,dataLen),
+                classLoader).readObject() ;
     }
 }
