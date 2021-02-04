@@ -1,9 +1,9 @@
 package org.garry.netty.channel;
 
-public class SimpleChannelHandler implements ChannelUpStreamHandler{
+public class SimpleChannelHandler implements ChannelUpstreamHandler {
 
     @Override
-    public void handleUpStream(ChannelHandlerContext ctx, ChannelEvent e) {
+    public void handleUpstream(ChannelHandlerContext ctx, ChannelEvent e) {
 
         if(e instanceof ChannelStateEvent)
         {
