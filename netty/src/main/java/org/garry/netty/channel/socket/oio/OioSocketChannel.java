@@ -1,4 +1,7 @@
 package org.garry.netty.channel.socket.oio;
 
-abstract class OioSocketChannel{
+import org.garry.netty.channel.AbstractChannel;
+
+abstract class OioSocketChannel extends AbstractChannel{
+
 }
