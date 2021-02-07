@@ -4,10 +4,10 @@ import org.garry.netty.channel.ChannelConfig;
 
 public interface SocketChannelConfig extends ChannelConfig {
 
-    boolean itTcpNoDelay();
+    boolean isTcpNoDelay();
 
     void setTcpNoDelay(boolean tcpNoDelay);
-    // todo ???
+    // todo ???  java.net.SocketOptions.SO_LINGER
     int getSoLinger();
 
     void setSoLinger(int soLinger);

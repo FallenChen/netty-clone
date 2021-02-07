@@ -12,7 +12,7 @@ public interface ChannelConfig {
 
     int getConnectTimeoutMillis();
 
-    void setConnectTimeoutMills(int connectTimeoutMills);
+    void setConnectTimeoutMillis(int connectTimeoutMills);
 
     int getWriteTimeoutMillis();
 
