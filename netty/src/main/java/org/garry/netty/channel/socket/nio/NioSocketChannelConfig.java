@@ -19,7 +19,8 @@ public interface NioSocketChannelConfig extends SocketChannelConfig {
      */
     void setWriteSpinCount(int writeSpinCount);
 
-
+    ReceiveBufferSizePredictor getReceiveBufferSizePredictor();
+    void setReceiveBufferSizePredictor(ReceiveBufferSizePredictor predictor);
 
     boolean isReadWriteFair();
     void setReadWriteFair(boolean fair);
