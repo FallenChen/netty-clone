@@ -1,5 +1,6 @@
 package org.garry.netty.channel;
 
+import java.net.InetAddress;
 import java.net.SocketAddress;
 import java.util.UUID;
 

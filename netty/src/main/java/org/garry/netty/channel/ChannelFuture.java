@@ -19,7 +19,7 @@ public interface ChannelFuture {
     void addListener(ChannelFutureListener listener);
     void removeListener(ChannelFutureListener listener);
 
-    ChannelFuture await();
+    ChannelFuture await() throws InterruptedException;
     ChannelFuture awaitUninterruptibly();
     boolean await(long timeout, TimeUnit unit);
     boolean await(long timeoutMills);
